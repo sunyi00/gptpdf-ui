@@ -4,5 +4,6 @@ import sys
 filepath = sys.argv[1]
 api_key = sys.argv[2]
 base_url = sys.argv[3]
+model = sys.argv[4]
 
-parse_pdf(filepath, api_key=api_key, base_url=base_url, output_dir=filepath+".parse", verbose=True)
+parse_pdf(filepath, api_key=api_key, base_url=base_url, output_dir=filepath+".parse", model=model, verbose=True)

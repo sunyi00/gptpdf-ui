@@ -1,5 +1,6 @@
 
 from flask import Flask, request, render_template, Response, send_file, send_from_directory
+import icecream
 import os
 import subprocess
 import base64
@@ -52,6 +53,7 @@ def md_render(filename):
 
 @app.route('/uploads/<path:filename>')
 def file_server(filename):
+    icecream.ic(UPLOAD_FOLDER, filename)
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 @app.route('/md/<path:filename>')
@@ -65,7 +67,7 @@ def zip_format(filename):
     return send_file(file_path, mimetype='application/x-zip', as_attachment=True, download_name=filename+'.zip')
 
 def run_gptpdf(filepath):
-    process = subprocess.Popen(['python', 'parse_pdf.py', filepath, os.environ['OPENAI_API_KEY'], os.environ['OPENAI_BASE_URL']], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(['python', 'parse_pdf.py', filepath, os.environ['OPENAI_API_KEY'], os.environ['OPENAI_BASE_URL'], os.environ.get('OPENAI_MODEL', 'qwen-vl-max')], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     for line in iter(process.stdout.readline, b''):
         line_str = line.decode('utf-8')
         match = re.match(r'!\[.*\]\((.*)\)', line_str)  # Match any image path format
@@ -126,4 +128,4 @@ class ImagePrefixInlineProcessor(InlineProcessor):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port=15000, debug=True)

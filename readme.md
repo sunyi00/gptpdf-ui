@@ -13,8 +13,9 @@ pip install -r requirements.txt
 ## set openai key
 
 ```shell
-export OPENAI_BASE_URL=https://api.xxxx.com/v1
+export OPENAI_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 export OPENAI_API_KEY=sk-xxxxx
+export OPENAI_MODEL=qwen-vl-max
 ```
 
 ## start serve
